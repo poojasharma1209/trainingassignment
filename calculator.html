@@ -1,0 +1,258 @@
+<html>
+
+<head>
+    <style>
+        *{
+            margin:0px;
+            padding:0px;
+            box-sizing: border-box;
+        }
+.main
+{
+    width:40%;
+    height:auto;
+    margin:0 auto;
+    margin-top:10%;
+    background-color:azure;
+    
+}
+.uper
+{
+    position:relative;
+    height:20%;
+    width:100%;
+    background-color: #eaecef;
+}
+.lower
+{
+    position:relative;
+    height:50%;
+    width:100%;
+    background-color: #e6eaef;
+   
+}
+li
+{
+    display: inline-block;
+    margin:7px;
+   
+}
+input{
+   
+    font-size: 25px;
+    
+    font-weight: bold;
+    width:100px;
+    color:black;
+    padding:20px;
+    background-color:#96989b;
+}
+ul
+{
+   
+    margin-left:40px;
+
+}
+@media screen and (max-width: 1200px) 
+{
+    input{
+   
+   font-size: 15px;
+   
+   font-weight: bold;
+   width:50px;
+   color:black;
+   padding:5px;
+   background-color:#96989b;
+}
+}
+@media screen and (max-width: 1200px) 
+{
+    ul
+{
+   
+    margin-left:40px;
+
+}
+}
+
+
+</style>
+<script>
+    
+    let s="";
+    let i=0;
+    let a=[];
+    let b=[];
+    let res;
+    let p="";
+    let f=true;
+function dis(x)
+{
+    
+
+
+if(x!='=')
+{
+s=s+x;    /*appending all inputs to display the all entered characters on a screen*/
+
+
+}
+
+document.getElementById("demo").innerHTML=s;
+
+if(!isNaN(x))    /* taking values containing more then one digits*/
+{
+p=p+x;
+f=true;
+
+}
+else if(isNaN(x) && f==true)  /*pushing operands in an array*/
+{
+a.push(p);
+
+p="";
+f=false;
+}
+if(isNaN(x) && x!='=')   /*pushing opeartors in an array*/
+{
+b.push(x);
+
+s1='';
+
+}
+
+if(x=='=')            /* finally making calculation*/
+{
+    if(a.length-1!=b.length)
+    {
+
+    clr();
+    document.getElementById("demo").innerHTML="syntax error enter again";
+    }
+    while(a.length!=1)
+
+{
+    res=cal();         /* so that if line contains multioperators then all  operations could be performed  in one line*/
+
+a.shift();
+a.shift();
+b.shift();
+a.unshift(res);
+}
+document.getElementById("demo2").innerHTML=res;
+
+}
+if(x=='c')
+{
+   clr();
+}
+}
+function clr()
+{
+    document.getElementById("demo").innerHTML="";
+    document.getElementById("demo2").innerHTML="";
+    
+    s="";
+    a=[];
+    b=[];
+}
+function cal()
+{
+
+switch(b[0])
+{
+
+
+    case '+':
+    
+    
+        return (Number(a[0])+Number(a[1]));
+    
+        case '/':
+    
+    
+    return (a[0]/a[1]);
+
+    case '-':
+    
+    
+        return (a[0]-a[1]);
+
+        case '*':
+    
+    
+        return (a[0]*a[1]);
+
+    default:
+    return '';
+}
+}
+</script>
+</head>
+
+<body>
+<div class="main">
+<div class="uper">
+
+
+<div id="uperhalf"><div id="demo" style="position: relative;top:20px;background-color:#96989b;padding:0px;height:45px; color:black;font-size:25px"></div><div id="demo2" style="position:relative;top:40px;background-color: #96989b;height:45px; color:black;font-size:25px;"></div></div>
+</div>
+
+<div class="lower"> 
+    <br>
+    <br>
+             <ul style="list-style-type: none;">
+
+
+              <li><input type="button" value="7"  onclick="dis(7)"></li>
+              <li><input type="button" value="8"  onclick="dis(8)"></li>
+              <li><input type="button" value="9"  onclick="dis(9)"></li>
+              <li><input type="button" value="-"  onclick="dis('-')"></li>
+           
+            </ul>
+
+
+
+              <ul style="list-style-type: none;">
+
+
+            <li><input type="button" value="4" id="four" onclick="dis(4)"></li>
+            <li><input type="button" value="5" id="five" onclick="dis(5)"></li>
+            <li><input type="button" value="6" id="six" onclick="dis(6)"></li>
+            <li><input type="button" value="*" id="multiply" onclick="dis('*')"></li>
+            </ul>
+        
+            <ul style="list-style-type: none;">
+
+
+            <li><input type="button" value="1" id="seven" onclick="dis('1')"></li>
+            <li><input type="button" value="2" id="eight" onclick="dis('2')"></li>
+            <li><input type="button" value="3" id="nine" onclick="dis('3')"></li>
+            <li><input type="button" value="/" id="divide" onclick="dis('/')"></li>
+                    </ul>
+
+                    <ul style="list-style-type: none;">
+
+
+                 <li><input type="button" value="c" id="equal" onclick="dis('c')"></li>
+                <li><input type="button" value="0" id="zero" onclick="dis('0')"></li>
+                <li><input type="button" value="=" id="plus" onclick="dis('=')"></li>
+                <li><input type="button" value="+" id="clear" onclick="dis('+')"></li>
+                            
+                            </ul>
+                
+        
+</div>
+</div>
+
+</body>
+
+
+
+
+
+
+
+
+</html>
