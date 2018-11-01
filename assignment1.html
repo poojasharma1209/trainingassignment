@@ -1,0 +1,289 @@
+<html>
+<head>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+      
+   #main
+   {
+       margin-top:0px;
+   }
+   .createbtn
+   {
+       margin-top:50px;
+       
+       margin-left:110px;
+      
+   }
+   #btn1:hover
+   {
+    background-color:#2d8e39; 
+    color: black;
+   }
+   #pages
+   {
+     margin-left:50%;
+     transform: translate(-50%);
+   }
+
+        </style>
+
+</head>
+
+<body>
+    <div class="createbtn">
+     <a href="create.html"><button class="btn btn-primary btn-lg" id="btn1">Create More</button></a>
+
+    </div>
+    <hr>
+<div class="container" id="main">
+   
+
+<table  class="table table-bordered table-hover table-responsive" id="datafetch">
+<thead>
+<tr>
+    
+    <th>FirstName</th>
+    <th>LastName</th>
+    <th>Email</th>
+    <th>PhoneNumber</th>
+    <!----<th><button class="btn btn-info btn-md btn-block" data-toggle="modal" data-target="#myModal">Update</button></th>
+   <th><button class="btn btn-info btn-md btn-block"  data-toggle="modal" data-target="#myModal2">Remove</button></th>-->
+    <th>add</th>
+    <th>remove</th>
+</tr>
+</thead>
+</table>
+<div>
+    <ul class="pagination pagination-sm" id="pages">
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+      </ul>
+
+
+    <ul class="pager">
+        <li class="previous"><a href="#">Previous</a></li>
+        <li class="next"><a href="#">Next</a></li>
+      </ul>
+      
+</div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+        
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Enter your details </h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                    <label for="fname">firstName</label>
+                    <input type="text" class="form-control" id="fname" placeholder="Enter your FirstName" name="fname">
+                  </div>
+                  <div class="form-group">
+                      <label for="lname">LastName</label>
+                      <input type="text" class="form-control" id="lname" placeholder="Enter lastname" name="lname">
+                    </div>
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter Email" name="email">
+                  </div>
+                  <div class="form-group">
+                      <label for="PhoneNumber">Phone Number</label>
+                      <input type="text" class="form-control" id="pnumber" placeholder="Enter Phone Number" name="pnumber">
+                    </div>
+                  
+                  <input type="button" class="btn btn-default" id="editb" value="submit">
+                </form>
+            </div>
+            <div class="modal-footer">
+              <input  type="button" class="btn btn-default" data-dismiss="modal" value="close">
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+
+
+
+
+  <!--    <div class="modal fade" id="myModal2" role="dialog">
+            <div class="modal-dialog">
+            
+             
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                  <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          -->
+          <input type="button" id="pooja" value="getdata">
+
+          <script>
+/*for fetching the data*/
+
+            function getuser()
+            {
+            
+           $.getJSON(
+           'http://assignmentapi.aspcore.net/api/users',
+            function(json)
+            {
+              
+             var tr='';
+        for (var i = 0; i < json.data.length; i++) {
+            tr+='<tr>';
+            tr+="<td>"+json.data[i].firstName+"</td>";
+            tr+="<td>" + json.data[i].lastName + "</td>";
+            tr+="<td>" + json.data[i].email+ "</td>";
+            tr+="<td>" + json.data[i].phone+ "</td>";
+            
+            tr+='<td><input type="button" onclick="modify(' + json.data[i].id + ')" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" id="edit" value="edit"></td>';
+            tr+='<td><input type="button" onclick="remove('+ json.data[i].id + ')" class="btn btn-info btn-sm"  data-toggle="modal" data-target="#myModal2" id="delete" value="delete"></td>';
+        // tr+='<td><input type="button" onclick="remove( ' + this + ')" class="btn btn-info btn-sm"   id="delete" value="remove"></td>';
+
+            tr+='</tr>';
+        }
+       $('#datafetch').append(tr);
+
+            });
+    
+            }
+            $(document).ready(function()
+            {
+              $("#pooja").click(function(){
+   
+                getuser();
+              });
+             
+            });
+
+
+
+  /*getting data on modal popup*/
+
+function modify(id)
+{
+   mainid=id;
+   
+  $.getJSON('http://assignmentapi.aspcore.net/api/users/'+id,function(response){
+
+
+document.getElementById("fname").value=response.data.firstName;
+document.getElementById("lname").value=response.data.lastName;
+document.getElementById("email").value=response.data.email;
+document.getElementById("pnumber").value=response.data.phone;
+
+  });
+
+}
+
+
+/*update*/
+$(document).ready(function()
+            {
+              $('#editb').click(function(){
+               var datauser=
+        {
+            firstName:$('#fname').val(),
+            lastName:$('#lname').val(),
+            email:$('#email').val(),
+            phone:$('#pnumber').val()
+    
+        };
+              
+        
+       editvalue(datauser);
+              });
+             
+            }); 
+
+ 
+ function editvalue(data)
+{
+
+    $.post('http://assignmentapi.aspcore.net/api/users/'+mainid,data,function(res){
+    if(res.success)
+    {
+        alert("user updated");
+    }
+    else
+    {
+        alert(res.message);
+    }
+ 
+   
+});
+
+}
+
+/*  deletion */
+function remove(did)
+{
+  
+  
+    
+
+
+   $.ajax({
+   
+    type:'DELETE',
+    url: 'http://assignmentapi.aspcore.net/api/users/'+did,
+  
+    
+  
+   success: function(res) {
+    
+       alert("data deleted")
+     
+     
+   },
+   error: function () {
+           alert("there is some error");
+               }
+  
+  
+ }); 
+
+
+
+}
+
+
+     
+         
+
+
+
+
+
+            
+</script>
+
+</body>
+
+</html>
