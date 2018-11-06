@@ -1,0 +1,172 @@
+<html>
+    <head>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+       <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+            <style>
+
+#formtable
+{
+margin-top:100px;
+}
+span
+{
+    color: red;
+    margin-left:10px;
+}
+                </style>
+          
+        </head>
+<body>
+<div class="container">
+    <span style="margin-top:100px;"> '*' symbolise the field is must </span>
+<form id="formtable" name="myform">
+
+
+<table class="table table-bordered" >
+<thead>
+    <tr>
+
+        <th>
+        FirstName<span>*</span>
+        </th>
+        <td>
+            <input  class="btn btn-block" type="text" name="name" id="fname" placeholder="enter your first name" /></td>
+            
+    </tr>
+    <tr>
+        <th>
+        LastName
+    </th>
+    <td>
+        <input class="btn btn-block"  type="text" name="lname" id="lname"placeholder="enter your second name" /></td>
+        
+    </tr>
+    <tr>
+            <th>
+            Email<span>*</span>
+        </th>
+        <td>
+            <input  class="btn btn-block" type="text" name="emailaddr" id="email"  placeholder="enter your mail" /></td>
+        
+        </tr>
+    
+        <tr>
+                <th>
+            Phone Number<span>*</span>
+            </th>
+            <td>
+                <input class="btn btn-block"  name="phonenum" type="text" id="pnumber" placeholder="enter your number" /></td>
+            
+            </tr>
+
+        <tr>
+                <td>
+           <button class="btn btn-lg btn-primary">Cancel</button>
+                </td>
+            <td>
+                <input type="button" class="btn btn-lg btn-primary" id="pooja"  value="ok">
+            </td>
+            
+            </tr>
+        
+    </thead>
+
+</table>
+</form>
+</div>
+<p id="demo"></p>
+<script>
+
+
+
+// form validation 
+
+
+
+
+
+
+
+   /* function validatemail()
+    {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(myForm.emailAddr.value))
+        {
+    return (true);
+  }
+  else{
+    alert("You have entered an invalid email address!");
+    return (false);
+    
+    }*/
+function createuser(data)
+{
+
+    $.post('http://assignmentapi.aspcore.net/api/users',data,function(res){
+    if(res.success)
+    {
+        alert("user created");
+        $("#fname").val('');
+        $("#lname").val('');
+        $("#email").val('');
+        $("#pnumber").val('');
+        
+            }
+    else
+    {
+        alert(res.message);
+    }
+ 
+   
+});
+
+}
+
+
+
+$(document).ready(function()
+            {
+              $('#pooja').click(function(){
+               var datauser=
+        {
+            firstName:$('#fname').val(),
+            lastName:$('#lname').val(),
+            email:$('#email').val(),
+            phone:$('#pnumber').val()
+    
+        };
+            if(datauser.firstName=="" || datauser.email==""||datauser.phone=="")
+            {
+                alert("please enter the required field");
+            }  
+        
+            else
+            {
+                //  if (datauser.email!=(/^\S+@\S+\.\S+$/))
+                //  {
+                //      alert ("email format is not correct");
+                //  }  
+            //   if(datauser.phone!=(/^\[0-9]{9}$/))
+            //     {
+            //         alert("plzz recheck your phone number entered");
+            //     } 
+                
+                    
+       createuser(datauser);
+                
+            }
+              });
+             
+            }); 
+
+
+           
+
+</script>
+</body>
+
+</html>
