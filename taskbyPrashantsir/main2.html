@@ -44,15 +44,12 @@ display: flex;
 list-style-type:none;
 padding: 20px;
 }
-
 li{
 padding: 20px;
 }
-
 td,tr{
     padding: 10px;
 }
-
         </style>
 
 </head>
@@ -86,18 +83,17 @@ td,tr{
 
 <div id="paging" style="margin-bottom:100px;">  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <ul class="pagination pagination-lg pager" id="pages">
-    <li value="1">1</li>
-    <li value="2">2</li>
-    <li value="3">3</li>
-    <li value="4">4</li>
-    <li value="5">5</li>
-    <li value="6">6</li>
-    <li value="7">7</li>
-    <li value="8">8</li>
-    <li value="9">9</li>
-    <li value="10">10</li>
-      </ul>
+<ul class="pagination pagination-lg pager" id="pages">
+  <li value="previous"><input type="button" class="btn btn-primary" id="pre" value="previous"></li> 
+<li value="1"><input type="button" class="btn btn-primary" id="first" value="1"></li>
+<li value="2"><input type="button" class="btn btn-primary" value="2"></li>
+<li value="3" id ="last"><input type="button" class="btn btn-primary"  value="3"></li>
+
+
+
+<li value="next"><input type="button" class="btn btn-primary" id="next" value="next"></li>
+</ul>
+
 
 
     <!-- <ul class="pager">
@@ -181,13 +177,11 @@ td,tr{
 /*for fetching the data*/
 function getdata()
 {
-
             var xhr = new XMLHttpRequest();
 xhr.open('GET',"http://assignmentapi.aspcore.net/api/users/",true);
 xhr.send();
-
 var udata;
- 
+ var flag=false;
 xhr.onload = function() 
 {
     if(this.status == 200) 
@@ -199,26 +193,67 @@ xhr.onload = function()
         data(1);
     }
 }
+var count=4;  
+var count2;
 
 $("li").click(function ()
-{       
+{
+      
 var a = $(this).attr("value");
-//console.log("value li "+ a);
-data(a);
-});
 
+//var x = document.getElementById("next").value;
+
+if((a=="next"))
+{
+ 
+
+  data(count);
+ 
+ if(flag!=true)
+ {
+   
+   count2=count;
+   count++;
+
+ }
+
+   
+  
+ 
+}
+else if((a=="previous"))
+{
+  count2--;
+ console.log(count2);
+ data(count2);
+if(count2==0)
+{
+  alert("sorry no more data");
+}
+  
+
+  
+  
+ 
+}
+else
+{
+data(a);
+}
+});
 function data(a)
 { 
-var len=udata.data.length;
 
     var output = "";
-
-    for(i=((a-1)*10);i<(a*10);i++)
+     for(i=((a-1)*10);i<(a*10);i++)
     {
-      if(udata.data[i].firstName===undefined)
+      if(i>udata.data.length-1)
       {
-        alert("no more data")
+        flag=true;
+       
+       break;
       }
+    
       else
       {
        // console.log(udata.data[10].firstName);
@@ -236,28 +271,19 @@ var len=udata.data.length;
     
    document.getElementById('tabledata').innerHTML = output;
 }
-
 }
-
   /*getting data on modal popup*/
-
 function modify(id)
 {
    mainid=id;
    
   $.getJSON('http://assignmentapi.aspcore.net/api/users/'+id,function(response){
-
-
 document.getElementById("fname").value=response.data.firstName;
 document.getElementById("lname").value=response.data.lastName;
 document.getElementById("email").value=response.data.email;
 document.getElementById("pnumber").value=response.data.phone;
-
   });
-
 }
-
-
 /*update*/
 $(document).ready(function()
             {
@@ -276,11 +302,9 @@ $(document).ready(function()
               });
              
             }); 
-
  
  function editvalue(data)
 {
-
     $.post('http://assignmentapi.aspcore.net/api/users/'+mainid,data,function(res){
     if(res.success)
     {
@@ -293,17 +317,13 @@ $(document).ready(function()
  
    
 });
-
 }
-
 /*  deletion */
 function remove(did)
 {
   
   
     
-
-
    $.ajax({
    
     type:'DELETE',
@@ -323,16 +343,8 @@ function remove(did)
   
   
  }); 
-
-
-
 }
-
-
-
 /*pagination   */
-
-
 </script>
 
 </body>
