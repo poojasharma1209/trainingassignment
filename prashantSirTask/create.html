@@ -8,7 +8,6 @@
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
             <style>
-
 #formtable
 {
 margin-top:100px;
@@ -27,86 +26,40 @@ span
 <form id="formtable" name="myform">
 
 
-<table class="table table-bordered" >
-<thead>
-    <tr>
 
-        <th>
+<div class="form-group">
         FirstName<span>*</span>
-        </th>
-        <td>
-            <input  class="btn btn-block" type="text" name="name" id="fname" placeholder="enter your first name" /></td>
-            
-    </tr>
-    <tr>
-        <th>
-        LastName
-    </th>
-    <td>
-        <input class="btn btn-block"  type="text" name="lname" id="lname"placeholder="enter your second name" /></td>
-        
-    </tr>
-    <tr>
-            <th>
+            <input  class="form-control" type="text" name="name" id="fname" placeholder="enter your first name" /></td>
+            </div>
+			<div class="form-group">
+       LastName
+        <input class="form-control"  type="text" name="lname" id="lname"placeholder="enter your second name" /></td>
+        </div>
+		<div class="form-group">
             Email<span>*</span>
-        </th>
-        <td>
-            <input  class="btn btn-block" type="text" name="emailaddr" id="email"  placeholder="enter your mail" /></td>
-        
-        </tr>
-    
-        <tr>
-                <th>
+            <input  class="form-control" type="text" name="emailaddr" id="email"  placeholder="enter your mail" /></td>
+        </div>
+		<div class="form-group">
             Phone Number<span>*</span>
-            </th>
-            <td>
-                <input class="btn btn-block"  name="phonenum" type="text" id="pnumber" placeholder="enter your number" /></td>
-            
-            </tr>
-
-        <tr>
-                <td>
-           <button class="btn btn-lg btn-primary">Cancel</button>
-                </td>
-            <td>
-                <input type="button" class="btn btn-lg btn-primary" id="pooja"  value="ok">
-            </td>
-            
-            </tr>
+                <input class="form-control"  name="phonenum" type="text" id="pnumber" placeholder="enter your number" /></td>
+            </div>
+           <a href="mainpage.html"><input type="button" class="btn btn-lg btn-primary" value="goback"></a>
+                <input type="button" onclick="validateform()" class="btn btn-lg btn-primary" id="pooja"  value="submit">
         
-    </thead>
-
-</table>
-</form>
+    </form>
 </div>
-<p id="demo"></p>
+
 <script>
 
 
 
-// form validation 
+   /* validating the form using javascript*/
 
 
-
-
-
-
-
-   /* function validatemail()
-    {
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(myForm.emailAddr.value))
-        {
-    return (true);
-  }
-  else{
-    alert("You have entered an invalid email address!");
-    return (false);
-    
-    }*/
 function createuser(data)
 {
-
     $.post('http://assignmentapi.aspcore.net/api/users',data,function(res){
+	
     if(res.success)
     {
         alert("user created");
@@ -115,7 +68,7 @@ function createuser(data)
         $("#email").val('');
         $("#pnumber").val('');
         
-            }
+    }
     else
     {
         alert(res.message);
@@ -123,15 +76,50 @@ function createuser(data)
  
    
 });
-
 }
-
-
-
-$(document).ready(function()
+		
+			function validateform()
+			{
+			
+			var name1=document.forms["myform"]["name"];
+            var email1=document.forms["myform"]["emailaddr"];
+            var phone1=document.forms["myform"]["emailaddr"];
+            var k=/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(email1.value);
+			 var l =/^\d{10}.$/.test(phone1.value);  
+			if(name1.value=="")
+			  {
+			alert("enter the name ");
+			
+			name1.focus();
+	
+			
+			
+			  }
+             
+            else if(email1.value=="")
+             {
+			 alert("enter the email address");
+			 email1.focus();
+			
+			 }			 
+			 
+			  
+			 else if(phone1.value=="")
+			  {
+			  alert("enter the phone number");
+			  phone1.focus();
+		
+			  }
+			  
+			
+			 
+			else if(k)
+			 {
+			 
+			 $(document).ready(function()
             {
-              $('#pooja').click(function(){
-               var datauser=
+             
+                datauser=               
         {
             firstName:$('#fname').val(),
             lastName:$('#lname').val(),
@@ -139,34 +127,22 @@ $(document).ready(function()
             phone:$('#pnumber').val()
     
         };
-            if(datauser.firstName=="" || datauser.email==""||datauser.phone=="")
-            {
-                alert("please enter the required field");
-            }  
-        
-            else
-            {
-                //  if (datauser.email!=(/^\S+@\S+\.\S+$/))
-                //  {
-                //      alert ("email format is not correct");
-                //  }  
-            //   if(datauser.phone!=(/^\[0-9]{9}$/))
-            //     {
-            //         alert("plzz recheck your phone number entered");
-            //     } 
-                
-                    
-       createuser(datauser);
-                
-            }
-              });
-             
-            }); 
 
-
+			
+			 createuser(datauser);
+	       });
+	         
+			 }
+			 else
+			 {
+			 alert("plz recheck your email format");
+	         }
+	
+	
+	}
+			
+			
            
-
 </script>
 </body>
-
 </html>
